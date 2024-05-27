@@ -12,6 +12,8 @@ def spatial_transform(theta, vector, flatten=True):
         return Rx@vector
     
 
+
+
 def assembleLeftVortex(xw, yw, zw, shift, translation):
     left = []
     for i in range(len(xw)-1):
