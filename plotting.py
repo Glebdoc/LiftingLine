@@ -22,6 +22,7 @@ column_names = ['GammasND', 'alpha', 'inflow','Cl', 'chord', 'points','FazimND',
 LL_6 = np.genfromtxt('LL_6.csv', delimiter=',', skip_header=1, names=column_names, dtype=None, encoding=None)
 LL_8 = np.genfromtxt('LL_8.csv', delimiter=',', skip_header=1, names=column_names, dtype=None, encoding=None)
 LL_10 = np.genfromtxt('LL_10.csv', delimiter=',', skip_header=1, names=column_names, dtype=None, encoding=None)
+LL_U_CS_8 = np.genfromtxt('LL_U_CS_8.csv', delimiter=',', skip_header=1, names=['AW', 'Ct', 'Cp'], dtype=None, encoding=None)
 
 # Plot alphas from LL data
 def plot_alpha(plotting, save):
@@ -127,9 +128,24 @@ def plot_Fnorm(plotting, save):
         plt.show()
     plt.close()
 
+def plot_ConvSpeed(plotting, save):
+    plt.figure()
+    plt.plot(LL_U_CS_8['AW'], LL_U_CS_8['Ct'],marker='o', color='r', label='LL:TSR = 8, Ct')
+    plt.plot(LL_U_CS_8['AW'], LL_U_CS_8['Cp'], marker='o', color='b', label='LL:TSR = 8, Cp')
 
-plot_alpha(plotting, save)
+    plt.grid()
+    plt.xlabel('$a_w$')
+    plt.ylabel(r'$C_P, C_T$')
+    plt.legend()
+    if save:
+        plt.savefig('./figures/ConvectionSpeed.pdf')
+    if plotting:
+        plt.show()
+    plt.close()
+
+'''plot_alpha(plotting, save)
 plot_inflow(plotting, save)
 plot_gammas(plotting, save)
 plot_Fazim(plotting, save)
-plot_Fnorm(plotting, save)
+plot_Fnorm(plotting, save)'''
+plot_ConvSpeed(plotting, False)

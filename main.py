@@ -191,8 +191,15 @@ for tsr in range(len(TSR)):
     Faxial = Lift*np.cos(inflowangle[:N]) + Drag*np.sin(inflowangle[:N])
     FaxialND = Faxial/(0.5*1.225*Uinf**2*R)
     GammasND = Gammas/(Uinf*Uinf*np.pi/(NB*Omega))
-    results = np.column_stack((GammasND[:N], alpha, inflowangle[:N]*180/np.pi, Cl, chord, rotor1.collocations[:N,1]/R, FazimND, FaxialND))
-    np.savetxt(f'LL_{localTSR}.csv', results, delimiter=',', header='GammasND,alpha,inflow,Cl,chord, points, FazimND, FaxialND', comments='')
+    dr = r_R[1:] * R - r_R[:-1] * R
+    Areas = 2 * np.pi * R * dr
+    Ct = np.sum(Faxial * NB * dr) / (0.5 * 1.225 * Uinf ** 2 * np.pi * R ** 2)
+    Cp = np.sum(Fazim * NB * dr * r_R[:-1] * Omega * R) / (0.5 * 1.225 * Uinf ** 3 * np.pi * R ** 2)
+    results = np.column_stack((GammasND[:N], alpha, inflowangle[:N] * 180 / np.pi, Cl, chord,
+                               rotor1.collocations[:N, 1] / R, FazimND, FaxialND, np.ones((len(alpha))) * Ct,
+                               np.ones((len(alpha))) * Cp))
+    np.savetxt(f'LL_{localTSR}.csv', results, delimiter=',',
+               header='GammasND,alpha,inflow,Cl,chord, points, FazimND, FaxialND, Ct, Cp', comments='')
 
     # Compute C_t and C_p
     dr = r_R[1:]*R - r_R[:-1]*R
