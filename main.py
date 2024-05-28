@@ -87,7 +87,10 @@ ROOT_LOCATION =  0.2
 PITCH = 2 # degrees 
 N = 35
 discretization_type = 'uniform' # 'cosine'
-t = np.linspace(0, 30, 150)
+
+NRotations = 10 # number of full rotations in the wake
+dt = 10 # time steps per rotation
+# t = np.linspace(0, 30, 150)
 # Wind 
 Uinf = 10 # unperturbed wind speed in m/s
 
@@ -95,13 +98,16 @@ Uinf = 10 # unperturbed wind speed in m/s
 r_R= spanwise_discretization(N, ROOT_LOCATION, TIP_LOCATION, discretization_type)
 chord_distribution = 3*(1-r_R)+1 # meters
 twist_distribution = -14*(1-r_R)+PITCH # degrees
-plotting = False
+plotting = True
 
 for tsr in range(len(TSR)):
     aw  = AW[tsr]
     localTSR = TSR[tsr]
     Omega = Uinf*localTSR/R
+    Tfinal = 2*np.pi*NRotations/Omega
+    t = np.linspace(0, Tfinal, dt*NRotations)
     rotor1 = Rotor(Point(0,0,0), R, localTSR, NB, N, r_R, chord_distribution, twist_distribution, aw, t)
+    #rotor2 = Rotor(Point(0,0,(2*R)*2), R, localTSR, NB, N, r_R, chord_distribution, twist_distribution, aw, t)
     rotors = [rotor1]
     NR = len(rotors)
 
@@ -174,7 +180,6 @@ for tsr in range(len(TSR)):
                     Gammas[i + blade*N + rotor*NB*N] = weight*Cl[i]*0.5*chord[i]*vtotal[i + blade*N + rotor*NB*N] + (1-weight)*Gammas_old[i + blade*N + rotor*NB*N]
         err = np.linalg.norm(Gammas - Gammas_old)
         
-        #print('iter:', iter, 'err',err)
     Cd = np.interp(alpha, polar_alpha, polar_cd)
     Lift = 0.5*chord*1.225*vtotal[:N]*vtotal[:N]*Cl
     Drag = 0.5*chord*1.225*vtotal[:N]*vtotal[:N]*Cd
@@ -188,6 +193,14 @@ for tsr in range(len(TSR)):
     GammasND = Gammas/(Uinf*Uinf*np.pi/(NB*Omega))
     results = np.column_stack((GammasND[:N], alpha, inflowangle[:N]*180/np.pi, Cl, chord, rotor1.collocations[:N,1]/R, FazimND, FaxialND))
     np.savetxt(f'LL_{localTSR}.csv', results, delimiter=',', header='GammasND,alpha,inflow,Cl,chord, points, FazimND, FaxialND', comments='')
+
+    # Compute C_t and C_p
+    dr = r_R[1:]*R - r_R[:-1]*R
+    Areas = 2*np.pi*R*dr
+    Ct = np.sum(Faxial*NB*dr)/(0.5*1.225*Uinf**2*np.pi*R**2)
+    Cp = np.sum(Fazim*NB*dr*r_R[:-1]*Omega*R)/(0.5*1.225*Uinf**3*np.pi*R**2)
+    print('C_T:', Ct)
+    print('C_P:', Cp)
     print('TSR:', localTSR, 'iterations:', iter, 'error:', err)
     
 
