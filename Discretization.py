@@ -81,8 +81,7 @@ polar_alpha = data['Alfa'].to_numpy()
 # Read BEM data
 # keys [a, aline, r_R, fnorm, ftan, gamma, phi, AoA, Prandtl, Prandtltip, Prandtlroot, cl_chord, cd_chord, L_chord, D_chord, sigma]
 BEM_TSR6 = np.load('BEM_results.npy')  # [:, key, tsr]
-#AW = [np.mean(BEM_TSR6[:,0,0]), np.mean(BEM_TSR6[:,0,1]), np.mean(BEM_TSR6[:,0,2])]
-AW = np.concatenate((np.arange(0, 1, 0.05), [np.mean(BEM_TSR6[:,0,1])]))
+AW = [np.mean(BEM_TSR6[:,0,0]), np.mean(BEM_TSR6[:,0,1]), np.mean(BEM_TSR6[:,0,2])]
 TSR = [6, 8, 10]
 # Wind turbine geometry
 R = 50  # [m]
@@ -90,7 +89,7 @@ NB = 3  # -
 TIP_LOCATION = 1
 ROOT_LOCATION = 0.2
 PITCH = 2  # degrees
-N = 15
+N_new = np.arange(1, 31, 2)
 discretization_type = 'uniform'  # 'cosine'
 
 NRotations = 10  # number of full rotations in the wake
@@ -99,18 +98,20 @@ dt = 10  # time steps per rotation
 # Wind
 Uinf = 10  # unperturbed wind speed in m/s
 
-# Discretize geometry
-r_R = spanwise_discretization(N, ROOT_LOCATION, TIP_LOCATION, discretization_type)
-chord_distribution = 3 * (1 - r_R) + 1  # meters
-twist_distribution = -14 * (1 - r_R) + PITCH  # degrees
+
 plotting = True
 
 Ct_array = []
 Cp_array = []
 
-for k in range(len(AW)):
+for k in range(len(N_new)):
     for tsr in range(1, 2):
-        aw = AW[k]
+        N = N_new[k]
+        # Discretize geometry
+        r_R = spanwise_discretization(N, ROOT_LOCATION, TIP_LOCATION, discretization_type)
+        chord_distribution = 3 * (1 - r_R) + 1  # meters
+        twist_distribution = -14 * (1 - r_R) + PITCH  # degrees
+        aw = AW[tsr]
         localTSR = TSR[tsr]
         Omega = Uinf * localTSR / R
         Tfinal = 2 * np.pi * NRotations / Omega
@@ -217,6 +218,6 @@ for k in range(len(AW)):
         print('TSR:', localTSR, 'iterations:', iter, 'error:', err)
 print('Ct = ', Ct_array)
 print('Cp', Cp_array)
-results = np.column_stack((AW, Ct_array, Cp_array))
-np.savetxt(f'LL_U_CS_{localTSR}.csv', results, delimiter=',',
-                   header='AW, Ct, Cp', comments='')
+results = np.column_stack((N_new, Ct_array, Cp_array))
+np.savetxt(f'LL_U_blade_{localTSR}.csv', results, delimiter=',',
+                   header='N_new, Ct, Cp', comments='')

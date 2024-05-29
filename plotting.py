@@ -23,6 +23,13 @@ LL_6 = np.genfromtxt('LL_6.csv', delimiter=',', skip_header=1, names=column_name
 LL_8 = np.genfromtxt('LL_8.csv', delimiter=',', skip_header=1, names=column_names, dtype=None, encoding=None)
 LL_10 = np.genfromtxt('LL_10.csv', delimiter=',', skip_header=1, names=column_names, dtype=None, encoding=None)
 LL_U_CS_8 = np.genfromtxt('LL_U_CS_8.csv', delimiter=',', skip_header=1, names=['AW', 'Ct', 'Cp'], dtype=None, encoding=None)
+LL_C_CS_8 = np.genfromtxt('LL_C_CS_8.csv', delimiter=',', skip_header=1, names=['AW', 'Ct', 'Cp'], dtype=None, encoding=None)
+LL_C_blade_8 = np.genfromtxt('LL_C_blade_8.csv', delimiter=',', skip_header=1, names=['N', 'Ct', 'Cp'], dtype=None, encoding=None)
+LL_U_blade_8 = np.genfromtxt('LL_U_blade_8.csv', delimiter=',', skip_header=1, names=['N', 'Ct', 'Cp'], dtype=None, encoding=None)
+LL_C_wake_8 = np.genfromtxt('LL_C_wake_8.csv', delimiter=',', skip_header=1, names=['dt', 'Ct', 'Cp'], dtype=None, encoding=None)
+LL_U_wake_8 = np.genfromtxt('LL_U_wake_8.csv', delimiter=',', skip_header=1, names=['dt', 'Ct', 'Cp'], dtype=None, encoding=None)
+LL_C_Rotation_8 = np.genfromtxt('LL_C_Rotation_8.csv', delimiter=',', skip_header=1, names=['NRotation', 'Ct', 'Cp'], dtype=None, encoding=None)
+LL_U_Rotation_8 = np.genfromtxt('LL_U_Rotation_8.csv', delimiter=',', skip_header=1, names=['NRotation', 'Ct', 'Cp'], dtype=None, encoding=None)
 
 # Plot alphas from LL data
 def plot_alpha(plotting, save):
@@ -129,23 +136,109 @@ def plot_Fnorm(plotting, save):
     plt.close()
 
 def plot_ConvSpeed(plotting, save):
-    plt.figure()
-    plt.plot(LL_U_CS_8['AW'], LL_U_CS_8['Ct'],marker='o', color='r', label='LL:TSR = 8, Ct')
-    plt.plot(LL_U_CS_8['AW'], LL_U_CS_8['Cp'], marker='o', color='b', label='LL:TSR = 8, Cp')
+    #N=15, Nrotation=10, dt=10
+    fig, axes = plt.subplots(1, 2, figsize=(12, 6))
+    axes[0].plot(LL_C_CS_8['AW'][:-1], LL_C_CS_8['Ct'][:-1],marker='o', color='r', linewidth=1, label='LL:TSR = 8, Cosine')
+    axes[0].plot(LL_U_CS_8['AW'][:-1], LL_U_CS_8['Ct'][:-1],'--',marker='v', color='b', linewidth=1, label='LL:TSR = 8, Uniform')
+    #axes[0].scatter(LL_C_CS_8['AW'][-1], LL_C_CS_8['Ct'][-1], marker='x', color='g', s=200, linewidth=1, label=f'LL:TSR = 8, Cosine, $a_w$ = {np.round(LL_C_CS_8["AW"][-1], 2)}')
+    #axes[0].scatter(LL_U_CS_8['AW'][-1], LL_U_CS_8['Ct'][-1], marker='x', color='black', s=200, linewidth=1, label=f'LL:TSR = 8, Uniform, $a_w$ = {np.round(LL_U_CS_8["AW"][-1], 2)}')
+    axes[0].grid()
+    axes[0].set_xlabel('$a_w$')
+    axes[0].set_ylabel(r'$C_T$')
+    axes[0].legend()
 
-    plt.grid()
-    plt.xlabel('$a_w$')
-    plt.ylabel(r'$C_P, C_T$')
-    plt.legend()
+    axes[1].plot(LL_C_CS_8['AW'][:-1], LL_C_CS_8['Cp'][:-1],marker='o', color='r', linewidth=1, label='LL:TSR = 8, Cosine')
+    axes[1].plot(LL_U_CS_8['AW'][:-1], LL_U_CS_8['Cp'][:-1], '--',marker='v', color='b', linewidth=1, label='LL:TSR = 8, Uniform')
+    #axes[1].scatter(LL_C_CS_8['AW'][-1], LL_C_CS_8['Cp'][-1], marker='x', color='g', s=200, linewidth=1, label=f'LL:TSR = 8, Cosine, $a_w$ = {np.round(LL_C_CS_8["AW"][-1], 2)}')
+    #axes[1].scatter(LL_U_CS_8['AW'][-1], LL_U_CS_8['Cp'][-1],  marker='x', color='black', s=200, linewidth=1, label=f'LL:TSR = 8, Uniform, $a_w$ = {np.round(LL_U_CS_8["AW"][-1], 2)}')
+    axes[1].grid()
+    axes[1].set_xlabel('$a_w$')
+    axes[1].set_ylabel(r'$C_P$')
+    axes[1].legend()
+
     if save:
-        plt.savefig('./figures/ConvectionSpeed.pdf')
+        plt.savefig('./figures/Uniform_vs_Cosine_CS.pdf')
     if plotting:
         plt.show()
     plt.close()
+
+
+def plot_uniform_vs_cosine(plotting, save):
+    #dt=10, Nrotation=10
+    fig, axes = plt.subplots(1, 2, figsize=(12, 6))
+    axes[0].plot(LL_C_blade_8['N'], LL_C_blade_8['Ct'] ,marker='o', color='r', label='LL:TSR = 8, Cosine')
+    axes[0].plot(LL_U_blade_8['N'], LL_U_blade_8['Ct'] ,'--' ,marker='v', color='b', label='LL:TSR = 8, Uniform')
+    axes[0].grid()
+    axes[0].set_xlabel('$N$')
+    axes[0].set_ylabel(r'$C_T$')
+    axes[0].legend()
+
+    axes[1].plot(LL_C_blade_8['N'], LL_C_blade_8['Cp'], marker='o', color='r', label='LL:TSR = 8, Cosine')
+    axes[1].plot(LL_U_blade_8['N'], LL_U_blade_8['Cp'], '--', marker='v', color='b', label='LL:TSR = 8, Uniform')
+    axes[1].grid()
+    axes[1].set_xlabel('$N$')
+    axes[1].set_ylabel(r'$C_P$')
+    axes[1].legend()
+
+    if save:
+        plt.savefig('./figures/Uniform_vs_Cosine.pdf')
+    if plotting:
+        plt.show()
+    plt.close()
+
+def plot_uniform_vs_cosine_wake(plotting, save):
+    #N=15, Nrotation=10
+    fig, axes = plt.subplots(1, 2, figsize=(12, 6))
+    axes[0].plot(LL_C_wake_8['dt'], LL_C_wake_8['Ct'] ,marker='o', color='r', label='LL:TSR = 8, Cosine')
+    axes[0].plot(LL_U_wake_8['dt'], LL_U_wake_8['Ct'] ,'--' ,marker='v', color='b', label='LL:TSR = 8, Uniform')
+    axes[0].grid()
+    axes[0].set_xlabel('Number of wake segments per rotation')
+    axes[0].set_ylabel(r'$C_T$')
+    axes[0].legend()
+
+    axes[1].plot(LL_C_wake_8['dt'], LL_C_wake_8['Cp'], marker='o', color='r', label='LL:TSR = 8, Cosine')
+    axes[1].plot(LL_U_wake_8['dt'], LL_U_wake_8['Cp'], '--', marker='v', color='b', label='LL:TSR = 8, Uniform')
+    axes[1].grid()
+    axes[1].set_xlabel('Number of wake segments per rotation')
+    axes[1].set_ylabel(r'$C_P$')
+    axes[1].legend()
+
+    if save:
+        plt.savefig('./figures/Uniform_vs_Cosine_wake.pdf')
+    if plotting:
+        plt.show()
+    plt.close()
+
+def plot_uniform_vs_cosine_Rotation(plotting, save):
+    #N=15, dt10
+    fig, axes = plt.subplots(1, 2, figsize=(12, 6))
+    axes[0].plot(LL_C_Rotation_8['NRotation'], LL_C_Rotation_8['Ct'] ,marker='o', color='r', label='LL:TSR = 8, Cosine')
+    axes[0].plot(LL_U_Rotation_8['NRotation'], LL_U_Rotation_8['Ct'] ,'--' ,marker='v', color='b', label='LL:TSR = 8, Uniform')
+    axes[0].grid()
+    axes[0].set_xlabel('Number of wake segments per rotation')
+    axes[0].set_ylabel(r'$C_T$')
+    axes[0].legend()
+
+    axes[1].plot(LL_C_Rotation_8['NRotation'], LL_C_Rotation_8['Cp'], marker='o', color='r', label='LL:TSR = 8, Cosine')
+    axes[1].plot(LL_U_Rotation_8['NRotation'], LL_U_Rotation_8['Cp'], '--', marker='v', color='b', label='LL:TSR = 8, Uniform')
+    axes[1].grid()
+    axes[1].set_xlabel('Number of Rotations')
+    axes[1].set_ylabel(r'$C_P$')
+    axes[1].legend()
+
+    if save:
+        plt.savefig('./figures/Uniform_vs_Cosine_Rotation.pdf')
+    if plotting:
+        plt.show()
+    plt.close()
+
 
 '''plot_alpha(plotting, save)
 plot_inflow(plotting, save)
 plot_gammas(plotting, save)
 plot_Fazim(plotting, save)
 plot_Fnorm(plotting, save)'''
-plot_ConvSpeed(plotting, False)
+plot_ConvSpeed(plotting, save)
+#plot_uniform_vs_cosine(plotting, save)
+#plot_uniform_vs_cosine_wake(plotting, save)
+#plot_uniform_vs_cosine_Rotation(plotting, save)
