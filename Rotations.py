@@ -90,9 +90,10 @@ TIP_LOCATION = 1
 ROOT_LOCATION = 0.2
 PITCH = 2  # degrees
 N = 15
-discretization_type = 'uniform'  # 'cosine'
+discretization_type = 'cosine'#'uniform'  # 'cosine'
 
-NRotations_new = np.arange(1, 21, 1)  # number of full rotations in the wake
+#NRotations_new = np.arange(1, 31, 1)  # number of full rotations in the wake
+NRotations_new = [4, 15, 25]
 dt = 10  # time steps per rotation
 # t = np.linspace(0, 30, 150)
 # Wind
@@ -106,10 +107,14 @@ plotting = True
 
 Ct_array = []
 Cp_array = []
+iter_array = []
+err_array = []
+iter_all = np.zeros((1100, 3))
+err_all = np.zeros((1100, 3))
 
-for k in range(len(NRotations_new)):
+for q in range(len(NRotations_new)):
     for tsr in range(1, 2):
-        NRotations = NRotations_new[k]
+        NRotations = NRotations_new[q]
         aw = AW[tsr]
         localTSR = TSR[tsr]
         Omega = Uinf * localTSR / R
@@ -150,8 +155,8 @@ for k in range(len(NRotations_new)):
 
         err = 1.0
         iter = 0
-
-        while (err > 1e-6 and iter < 1200):
+        #while (err > 1e-6 and iter < 1200):
+        while (iter < 1100):
             iter += 1
             u = u_influences @ Gammas
             v = v_influences @ Gammas
@@ -189,6 +194,8 @@ for k in range(len(NRotations_new)):
                         Gammas[i + blade * N + rotor * NB * N] = weight * Cl[i] * 0.5 * chord[i] * vtotal[
                             i + blade * N + rotor * NB * N] + (1 - weight) * Gammas_old[i + blade * N + rotor * NB * N]
             err = np.linalg.norm(Gammas - Gammas_old)
+            iter_all[iter-1][q] = iter
+            err_all[iter-1][q] = err
 
         Cd = np.interp(alpha, polar_alpha, polar_cd)
         Lift = 0.5 * chord * 1.225 * vtotal[:N] * vtotal[:N] * Cl
@@ -213,10 +220,17 @@ for k in range(len(NRotations_new)):
         np.savetxt(f'LL_{localTSR}.csv', results, delimiter=',',
                    header='GammasND,alpha,inflow,Cl,chord, points, FazimND, FaxialND, Ct, Cp', comments='')'''
 
-
+        iter_array = np.append(iter_array, iter)
+        err_array = np.append(err_array, err)
         print('TSR:', localTSR, 'iterations:', iter, 'error:', err)
 print('Ct = ', Ct_array)
 print('Cp', Cp_array)
+results = np.column_stack((iter_all, err_all))
+np.savetxt(f'LL_C_Rotation_Err_all_{localTSR}.csv', results, delimiter=',',
+                   header='iter, err', comments='')
+'''results = np.column_stack((NRotations_new, iter_array, err_array))
+np.savetxt(f'LL_U_Rotation_Err_{localTSR}.csv', results, delimiter=',',
+                   header='NRotation, iter, err', comments='')
 results = np.column_stack((NRotations_new, Ct_array, Cp_array))
 np.savetxt(f'LL_U_Rotation_{localTSR}.csv', results, delimiter=',',
-                   header='NRotation, Ct, Cp', comments='')
+                   header='NRotation, Ct, Cp', comments='')'''

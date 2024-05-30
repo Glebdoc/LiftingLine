@@ -30,6 +30,10 @@ LL_C_wake_8 = np.genfromtxt('LL_C_wake_8.csv', delimiter=',', skip_header=1, nam
 LL_U_wake_8 = np.genfromtxt('LL_U_wake_8.csv', delimiter=',', skip_header=1, names=['dt', 'Ct', 'Cp'], dtype=None, encoding=None)
 LL_C_Rotation_8 = np.genfromtxt('LL_C_Rotation_8.csv', delimiter=',', skip_header=1, names=['NRotation', 'Ct', 'Cp'], dtype=None, encoding=None)
 LL_U_Rotation_8 = np.genfromtxt('LL_U_Rotation_8.csv', delimiter=',', skip_header=1, names=['NRotation', 'Ct', 'Cp'], dtype=None, encoding=None)
+LL_C_Rotation_Err_8 = np.genfromtxt('LL_C_Rotation_Err_8.csv', delimiter=',', skip_header=1, names=['NRotation', 'iter', 'err'], dtype=None, encoding=None)
+LL_U_Rotation_Err_8 = np.genfromtxt('LL_U_Rotation_Err_8.csv', delimiter=',', skip_header=1, names=['NRotation', 'iter', 'err'], dtype=None, encoding=None)
+LL_C_Rotation_Err_all_8 = np.genfromtxt('LL_C_Rotation_Err_all_8.csv', delimiter=',', skip_header=1, names=['iter1', 'iter2', 'iter3', 'err1', 'err2', 'err3'], dtype=None, encoding=None)
+LL_U_Rotation_Err_all_8 = np.genfromtxt('LL_U_Rotation_Err_all_8.csv', delimiter=',', skip_header=1, names=['iter1', 'iter2', 'iter3', 'err1', 'err2', 'err3'], dtype=None, encoding=None)
 
 # Plot alphas from LL data
 def plot_alpha(plotting, save):
@@ -215,7 +219,7 @@ def plot_uniform_vs_cosine_Rotation(plotting, save):
     axes[0].plot(LL_C_Rotation_8['NRotation'], LL_C_Rotation_8['Ct'] ,marker='o', color='r', label='LL:TSR = 8, Cosine')
     axes[0].plot(LL_U_Rotation_8['NRotation'], LL_U_Rotation_8['Ct'] ,'--' ,marker='v', color='b', label='LL:TSR = 8, Uniform')
     axes[0].grid()
-    axes[0].set_xlabel('Number of wake segments per rotation')
+    axes[0].set_xlabel('Number of Rotations')
     axes[0].set_ylabel(r'$C_T$')
     axes[0].legend()
 
@@ -232,13 +236,62 @@ def plot_uniform_vs_cosine_Rotation(plotting, save):
         plt.show()
     plt.close()
 
+def plot_uniform_vs_cosine_Rotation_Err(plotting, save):
+    #N=15, dt10
+    plt.figure()
+    plt.plot(LL_C_Rotation_Err_8['NRotation'], LL_C_Rotation_Err_8['iter'] ,marker='o', color='r', label='LL:TSR = 8, Cosine')
+    plt.plot(LL_U_Rotation_Err_8['NRotation'], LL_U_Rotation_Err_8['iter'] ,'--' ,marker='v', color='b', label='LL:TSR = 8, Uniform')
+    plt.grid()
+    plt.xlabel('Number of Rotations')
+    plt.ylabel(r'Iteration')
+    plt.legend()
+
+    if save:
+        plt.savefig('./figures/Uniform_vs_Cosine_Rotation_Err.pdf')
+    if plotting:
+        plt.show()
+    plt.close()
+
+def plot_uniform_vs_cosine_Rotation_Err_all(plotting, save):
+    # N=15, dt10
+    fig, axes = plt.subplots(1, 2, figsize=(12, 6))
+    axes[1].plot(LL_U_Rotation_Err_all_8['iter1'], np.log10(LL_U_Rotation_Err_all_8['err1']), color='g',
+                 label='LL:TSR = 8, $N_{Rotation}$ = 4')
+    axes[1].plot(LL_U_Rotation_Err_all_8['iter2'], np.log10(LL_U_Rotation_Err_all_8['err2']), color='r',
+                 label='LL:TSR = 8, $N_{Rotation}$ = 15')
+    axes[1].plot(LL_U_Rotation_Err_all_8['iter3'], np.log10(LL_U_Rotation_Err_all_8['err3']), color='b',
+                 label='LL:TSR = 8, $N_{Rotation}$ = 25')
+    axes[1].grid()
+    axes[1].set_xlabel('Iteration')
+    axes[1].set_ylabel('Error')
+    axes[1].legend()
+
+    axes[0].plot(LL_C_Rotation_Err_all_8['iter1'], np.log10(LL_C_Rotation_Err_all_8['err1']), color='g',
+                 label='LL:TSR = 8, $N_{Rotation}$ = 4')
+    axes[0].plot(LL_C_Rotation_Err_all_8['iter2'], np.log10(LL_C_Rotation_Err_all_8['err2']), color='r',
+                 label='LL:TSR = 8, $N_{Rotation}$ = 15')
+    axes[0].plot(LL_C_Rotation_Err_all_8['iter3'], np.log10(LL_C_Rotation_Err_all_8['err3']), color='b',
+                 label='LL:TSR = 8, $N_{Rotation}$ = 25')
+    axes[0].grid()
+    axes[0].set_xlabel('Iteration')
+    axes[0].set_ylabel('Error')
+    axes[0].legend()
+
+    if save:
+        plt.savefig('./figures/Uniform_vs_Cosine_Rotation_Err_all.pdf')
+    if plotting:
+        plt.show()
+    plt.close()
+
 
 '''plot_alpha(plotting, save)
 plot_inflow(plotting, save)
 plot_gammas(plotting, save)
 plot_Fazim(plotting, save)
 plot_Fnorm(plotting, save)'''
-plot_ConvSpeed(plotting, save)
+#plot_ConvSpeed(plotting, save)
 #plot_uniform_vs_cosine(plotting, save)
 #plot_uniform_vs_cosine_wake(plotting, save)
 #plot_uniform_vs_cosine_Rotation(plotting, save)
+#plot_uniform_vs_cosine_Rotation_Err(plotting, save)
+#plot_uniform_vs_cosine_Rotation_Err_all(plotting, save)

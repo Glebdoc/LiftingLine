@@ -89,8 +89,8 @@ NB = 3  # -
 TIP_LOCATION = 1
 ROOT_LOCATION = 0.2
 PITCH = 2  # degrees
-N_new = np.arange(1, 31, 2)
-discretization_type = 'uniform'  # 'cosine'
+N_new = np.arange(1, 42, 2)
+discretization_type = 'cosine'#'uniform'  # 'cosine'
 
 NRotations = 10  # number of full rotations in the wake
 dt = 10  # time steps per rotation
@@ -219,5 +219,5 @@ for k in range(len(N_new)):
 print('Ct = ', Ct_array)
 print('Cp', Cp_array)
 results = np.column_stack((N_new, Ct_array, Cp_array))
-np.savetxt(f'LL_U_blade_{localTSR}.csv', results, delimiter=',',
+np.savetxt(f'LL_C_blade_{localTSR}.csv', results, delimiter=',',
                    header='N_new, Ct, Cp', comments='')

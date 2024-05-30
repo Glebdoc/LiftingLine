@@ -5,12 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="72ec48b8-f50b-43cd-9fae-4d6fe6c57b35" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Discretization.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Rotations.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wake_segments.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LL_U_CS_8.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Sensitivy_Analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/Sensitivy_Analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Discretization.py" beforeDir="false" afterPath="$PROJECT_DIR$/Discretization.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LL_C_Rotation_8.csv" beforeDir="false" afterPath="$PROJECT_DIR$/LL_C_Rotation_8.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LL_C_blade_8.csv" beforeDir="false" afterPath="$PROJECT_DIR$/LL_C_blade_8.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LL_U_Rotation_8.csv" beforeDir="false" afterPath="$PROJECT_DIR$/LL_U_Rotation_8.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LL_U_blade_8.csv" beforeDir="false" afterPath="$PROJECT_DIR$/LL_U_blade_8.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Rotations.py" beforeDir="false" afterPath="$PROJECT_DIR$/Rotations.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/figures/Uniform_vs_Cosine.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/figures/Uniform_vs_Cosine.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/figures/Uniform_vs_Cosine_Rotation.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/figures/Uniform_vs_Cosine_Rotation.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plotting.py" beforeDir="false" afterPath="$PROJECT_DIR$/plotting.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -44,6 +47,27 @@
   }
 }</component>
   <component name="RunManager" selected="Python.plotting">
+    <configuration name="Discretization" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="LiftingLine" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Discretization.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="Rotations" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="LiftingLine" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -78,27 +102,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Sensitivy_Analysis.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="LiftingLine" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -152,10 +155,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.plotting" />
-        <item itemvalue="Python.Sensitivy_Analysis" />
+        <item itemvalue="Python.Discretization" />
         <item itemvalue="Python.Rotations" />
+        <item itemvalue="Python.Sensitivy_Analysis" />
         <item itemvalue="Python.wake_segments" />
-        <item itemvalue="Python.main" />
       </list>
     </recent_temporary>
   </component>
